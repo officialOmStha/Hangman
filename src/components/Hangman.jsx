@@ -3,19 +3,33 @@ import { useState, useEffect } from 'react'
 const Hangman = () => {
     const [comWord, setComWord] = useState("");
     const [inp, setInp] = useState('');
+    const [wrong, setWrong] = useState('');
+    const [count, setCount]= useState(0);
+    const [boxes, setBoxes] = useState([""])
 
     const words = ["apple", "ball", "cat", "danger", "eager", "gun"];
 
     const getWord = () => {
-        const data = words[Math.floor(Math.random() * words.length)]
+        const data = (words[Math.floor(Math.random() * words.length)]).toUpperCase();
         setComWord(data)
+        setBoxes(Array(data.length).fill(""))
     }
 
 
     const handelInp = (e) => {
         e.preventDefault();
+        if (!inp) return;
 
+        const newBoxes = [...boxes];
 
+        for (let i = 0; i < comWord.length ; i++) {
+            if(comWord[i] === inp){
+                newBoxes[i] = inp;
+            }
+        }
+
+        setBoxes(newBoxes);
+        setInp("");
     }
     useEffect(() => {
         getWord();
@@ -32,8 +46,9 @@ const Hangman = () => {
                 <input
                     type="text"
                     value={inp}
+                    maxLength={1}
                     placeholder='Character to check'
-                    onChange={(e) => setInp(e.target.value)}
+                    onChange={(e) => setInp((e.target.value).toUpperCase())}
                     className='py-2 px-4 rounded border-2'
                 />
                 <button
@@ -42,7 +57,13 @@ const Hangman = () => {
                     Put
                 </button>
             </form>
-            <span>Your Char: {inp}</span>
+            <ul className="flex gap-2">
+                {boxes.map((box, index) => (
+                    <li 
+                    className='w-10 h-10 border-2 flex justify-center items-center'
+                    key={index}>{box}</li>
+                ))}
+            </ul>
             <span>Commputer Generated : {comWord}</span>
         </div>
     )
