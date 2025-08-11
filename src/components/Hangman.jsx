@@ -71,8 +71,9 @@ const Hangman = () => {
         < div
             className="w-full p-4 md:p-20 flex flex-col justify-center items-center"
         >
-            <h1 className='text-5xl'>Hang Man</h1>
-            <form
+            <h1 className='text-5xl '>Hang Man</h1>
+            <div className="flex flex-col justify-center items-center">
+                <form
                 className='flex gap-2 my-6'
                 onSubmit={handelInp}
             >
@@ -124,6 +125,7 @@ const Hangman = () => {
                 >
                     Reset
                 </button>}
+            </div>
         </div>
     )
 }
