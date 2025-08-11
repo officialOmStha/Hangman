@@ -1,7 +1,19 @@
 import { useState, useEffect, useRef } from 'react'
+import words from './dictionary';
+import Zero from '../assets/Zero.png'
+import One from '../assets/One.png'
+import Two from '../assets/Two.png'
+import Four from '../assets/Four.png'
+import Five from '../assets/Five.png'
+import Six from '../assets/Six.png'
+import InpSound from '../assets/Inp.mp3'
+
+
+
 
 const Hangman = () => {
     const inputRef = useRef(null);
+    const guessSound = useRef(new Audio(InpSound));
 
     const [comWord, setComWord] = useState("");
     const [inp, setInp] = useState('');
@@ -9,9 +21,6 @@ const Hangman = () => {
     const [count, setCount] = useState(0);
     const [boxes, setBoxes] = useState([""]);
     const [message, setMessage] = useState("");
-
-
-    const words = ["apple", "ball", "cat", "danger", "eager", "gun"];
 
     const getWord = () => {
         const data = (words[Math.floor(Math.random() * words.length)]).toUpperCase();
@@ -34,6 +43,9 @@ const Hangman = () => {
             return;
         }
 
+        guessSound.current.currentTime = 0;
+        guessSound.current.play();
+
         const newBoxes = [...boxes];
 
         for (let i = 0; i < comWord.length; i++) {
@@ -52,8 +64,12 @@ const Hangman = () => {
     }
 
     const handelReset = () => {
-        getWord();
         setWrong([]);
+        setCount(0)
+        setBoxes([])
+        setMessage("");
+        setInp("")
+        getWord();
     }
 
     useEffect(() => {
@@ -68,65 +84,80 @@ const Hangman = () => {
     }, [message]);
 
     return (
-        < div
-            className="w-full p-4 md:p-20 flex flex-col justify-center items-center"
-        >
-            <h1 className='text-5xl '>Hang Man</h1>
-            <div className="flex flex-col justify-center items-center">
-                <form
-                className='flex gap-2 my-6'
-                onSubmit={handelInp}
-            >
-                <input
-                    ref={inputRef}
-                    type="text"
-                    value={inp}
-                    maxLength={1}
-                    placeholder='Character to check'
-                    onChange={(e) => setInp((e.target.value).toUpperCase())}
-                    disabled={count >= 6 || !boxes.includes("")}
-                    className='py-2 px-4 rounded border-2'
-                />
-                <button
-                    type='submit'
-                    disabled={count >= 6 || !boxes.includes("")}
-                    className='bg-green-400 hover:bg-green-500 py-2 px-4 rounded border-2'
-                >
-                    Put
-                </button>
-            </form>
-            <ul className="flex gap-2">
-                {boxes.map((box, index) => (
-                    <li
-                        className='w-10 h-10 border-2 flex justify-center items-center'
-                        key={index}>{box}</li>
-                ))}
-            </ul>
-            {(count >= 6 || !boxes.includes("")) && <span>Commputer Generated : {comWord}</span>}
-            
-            <span
-                className='flex'
-            >
-                Wrong letter :
-                {wrong.map((wchar, index) => (
-                    <div
-                        className='mx-[4px] text-red-500'
-                        key={index}>{wchar}</div>
-                ))}
-            </span>
-            {!boxes.includes("") ? <div>You Won</div> : ""}
-            {count >= 6 ? <div> You Lost</div> : ""}
+        <>
 
-            {message && <div className='text-red-500'>{message}</div>}
-            {(count >= 6 || !boxes.includes("")) &&
-                <button
-                    className='bg-green-400 hover:bg-green-500 py-2 px-4 rounded border-2'
-                    onClick={handelReset}
+            < div
+                className="w-full p-4 md:p-20 flex flex-col  md:flex-row justify-center items-center gap-[20px] md:gap-[10%]"
+            >
+                <div className="flex flex-col justify-center items-center w-70%">
+                    <h1 className='text-5xl '>Hang Man</h1>
+                    <form
+                        className='flex gap-2 my-6'
+                        onSubmit={handelInp}
+                    >
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            value={inp}
+                            maxLength={1}
+                            placeholder='Character to check'
+                            onChange={(e) => setInp((e.target.value).toUpperCase())}
+                            // disabled={count >= 6 || !boxes.includes("") || inp===""}
+                            className='py-2 px-4 rounded border-2'
+                        />
+                        <button
+                            type='submit'
+                            // disabled={count >= 6 || !boxes.includes("")}
+                            className='bg-green-400 hover:bg-green-500 py-2 px-4 rounded border-2'
+                        >
+                            Put
+                        </button>
+                    </form>
+                    <ul className="flex gap-2">
+                        {boxes.map((box, index) => (
+                            <li
+                                className='w-10 h-10 border-2 flex justify-center items-center'
+                                key={index}>{box}</li>
+                        ))}
+                    </ul>
+                    {(count >= 6 || !boxes.includes("")) && <span>Commputer Generated : {comWord}</span>}
+
+                    <span
+                        className='flex'
+                    >
+                        Wrong letter :
+                        {wrong.map((wchar, index) => (
+                            <div
+                                className='mx-[4px] text-red-500'
+                                key={index}>{wchar}</div>
+                        ))}
+                    </span>
+                    {!boxes.includes("") ? <div>You Won</div> : ""}
+                    {count >= 6 ? <div> You Lost</div> : ""}
+
+                    {message && <div className='text-red-500'>{message}</div>}
+                    {(count >= 6 || !boxes.includes("")) &&
+                        <button
+                            className='bg-green-400 hover:bg-green-500 py-2 px-4 rounded border-2'
+                            onClick={handelReset}
+                        >
+                            Reset
+                        </button>}
+                </div>
+                <div
+                    className='md:w-[30%] w-full'
                 >
-                    Reset
-                </button>}
+                    {count == 0 && <img src={Zero} alt="hangman" />}
+                    {count == 1 && <img src={One} alt="hangman" />}
+                    {count == 2 && <img src={Two} alt="hangman" />}
+                    {count == 3 && <img src={Four} alt="hangman" />}
+                    {count == 4 && <img src={Four} alt="hangman" />}
+                    {count == 5 && <img src={Five} alt="hangman" />}
+                    {count == 6 && <img src={Six} alt="hangman" />}
+
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 
