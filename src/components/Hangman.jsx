@@ -53,6 +53,7 @@ const Hangman = () => {
 
     const handelReset = () => {
         getWord();
+        setWrong([]);
     }
 
     useEffect(() => {
@@ -100,7 +101,8 @@ const Hangman = () => {
                         key={index}>{box}</li>
                 ))}
             </ul>
-            <span>Commputer Generated : {comWord}</span>
+            {(count >= 6 || !boxes.includes("")) && <span>Commputer Generated : {comWord}</span>}
+            
             <span
                 className='flex'
             >
