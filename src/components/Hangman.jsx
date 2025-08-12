@@ -152,8 +152,18 @@ const Hangman = () => {
                                 key={index}>{wchar}</div>
                         ))}
                     </span>
-                    {!boxes.includes("") ? <div>You Won</div> : ""}
-                    {count >= 6 ? <div> You Lost</div> : ""}
+                    {!boxes.includes("") ? 
+                    <div
+                    className='text-green-400 text-3xl'
+                    >You Won</div> 
+                    : 
+                    ""}
+
+                    {count >= 6 ? 
+                    <div
+                    className='text-red-400 text-3xl'
+                    > You Lost</div> : 
+                    ""}
 
                     {message && <div className='text-red-500'>{message}</div>}
                     {(count >= 6 || !boxes.includes("")) &&
