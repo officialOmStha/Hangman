@@ -7,6 +7,8 @@ import Four from '../assets/Four.png'
 import Five from '../assets/Five.png'
 import Six from '../assets/Six.png'
 import InpSound from '../assets/Inp.mp3'
+import LostSOund from '../assets/Lost.mp3'
+import WinSound from '../assets/Win.mp3'
 
 
 
@@ -57,6 +59,7 @@ const Hangman = () => {
         if (!comWord.includes(inp) && !wrong.includes(inp)) {
             setCount((prev) => prev + 1);
             setWrong((prev) => [...prev, inp])
+
         }
 
         setBoxes(newBoxes);
@@ -82,6 +85,23 @@ const Hangman = () => {
             return () => clearTimeout(timer);
         }
     }, [message]);
+
+    useEffect(() => {
+        if (count >= 6) { // 6 is your losing limit
+            const lostAudio = new Audio(LostSOund);
+            lostAudio.currentTime = 0;
+            lostAudio.play();
+        }
+    }, [count]);
+
+    useEffect(() =>{
+        if(!boxes.includes("")){
+            const WinAudio = new Audio(WinSound);
+            WinAudio.currentTime = 0;
+            WinAudio.play();
+        }
+    },[boxes])
+
 
     return (
         <>
