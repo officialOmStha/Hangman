@@ -4,6 +4,7 @@ import Zero from '../assets/Zero.png'
 import One from '../assets/One.png'
 import Two from '../assets/Two.png'
 import Four from '../assets/Four.png'
+import Three from '../assets/Three.png'
 import Five from '../assets/Five.png'
 import Six from '../assets/Six.png'
 import InpSound from '../assets/Inp.mp3'
@@ -87,7 +88,7 @@ const Hangman = () => {
     }, [message]);
 
     useEffect(() => {
-        if (count >= 6) { // 6 is your losing limit
+        if (count >= 6) {
             const lostAudio = new Audio(LostSOund);
             lostAudio.currentTime = 0;
             lostAudio.play();
@@ -175,16 +176,36 @@ const Hangman = () => {
                         </button>}
                 </div>
                 <div
-                    className='md:w-[30%] w-full'
+                    className='md:w-[30%] w-full flex justify-center items-center'
                 >
-                    {count == 0 && <img src={Zero} alt="hangman" />}
-                    {count == 1 && <img src={One} alt="hangman" />}
-                    {count == 2 && <img src={Two} alt="hangman" />}
-                    {count == 3 && <img src={Four} alt="hangman" />}
-                    {count == 4 && <img src={Four} alt="hangman" />}
-                    {count == 5 && <img src={Five} alt="hangman" />}
-                    {count == 6 && <img src={Six} alt="hangman" />}
-
+                    {count == 0 && <img 
+                    src={Zero} alt="hangman"
+                    className='w-[100px] md:w-[180px]' 
+                    />}
+                    {count == 1 && <img 
+                    src={One} alt="hangman" 
+                    className='w-[100px] md:w-[180px]'
+                    />}
+                    {count == 2 && <img 
+                    src={Two} alt="hangman"
+                    className='w-[100px] md:w-[180px]'
+                    />}
+                    {count == 3 && <img 
+                    src={Three} alt="hangman" 
+                    className='w-[100px] md:w-[180px]'
+                    />}
+                    {count == 4 && <img 
+                    src={Four} alt="hangman" 
+                    className='w-[100px] md:w-[180px]'
+                    />}
+                    {count == 5 && <img 
+                    src={Five} alt="hangman" 
+                    className='w-[100px] md:w-[180px]'
+                    />}
+                    {count == 6 && <img 
+                    src={Six} alt="hangman" 
+                    className='w-[100px] md:w-[180px]'
+                    />}
                 </div>
             </div>
         </>
